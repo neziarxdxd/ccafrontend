@@ -6,21 +6,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <style>
+        *{
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
         table, th, td {
           border: 1px solid black;
           border-collapse: collapse;
         }
+        .inputLabel{
+            height: 30px;
+            width:40%;
+        }
         </style>
-          <script src="https://cdn.tailwindcss.com"></script>
-
 </head>
 <body>
     <h1>Register Student</h1>
     <ul id="students"></ul>
-    <input type="text" id="studentID" placeholder="Student ID"><br>
-    <input type="text" id="studentName" placeholder="Student Name"><br>
+    <input type="text" class="inputLabel" id="studentID" placeholder="Student ID"><br>
+    <input type="text" class="inputLabel" id="studentName" placeholder="Student Name"><br>
     <br><br>
-    <button id="add-student">Add</button>
+    <button class="button" id="add-student">Save Student</button>
     
     <table style="width:70%;">
       <thead>
