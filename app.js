@@ -20,10 +20,14 @@ $(function () {
 });
 
 function addRowData(){
-    $("table tbody").html("");
-    for(var i=0; i<listOfGrades.length; i++){     
-            var markup = `<tr>${listOfGrades[i].name}</td><td>${listOfGrades[i].grade}</td></tr>`;
-            $("table tbody").append(markup);        
+    
+    $("#table1 tbody").html("");
+    for(var i=0; i<listOfGrades[0].length; i++){
+
+            var markup = `<tr><td>${listOfGrades[0][i].name}</td><td>${listOfGrades[0][i].grade}</td></tr>`;
+        
+            $("#table1 tbody").append(markup);  
+            console.log(listOfGrades[0][i].name);      
       
     }
 
@@ -45,15 +49,50 @@ $('#add-student').on('click',function(){
 
     });
 } );
+var currentID;
+// this use to register student
+$('#save-grade').on('click',function(){
+    var $studentName = $("#studentName");
+    var $studentID = $("#studentID");
+    var studenTest =  {
+    "studentID":$studentID.val(),
+    "studentName":$studentName.val(),   
+    };
 
-$("#add-grade").on('click', function(){
-var $name = $("#name");
-var $grade = $("#grade");
-listOfGrades.push(
-    {name:$name.val(), 
-    grade:$grade.val()}
-    );
-console.log(listOfGrades);
-addRowData();
+    $.ajax({
+        data : JSON.stringify(studenTest),
+        contentType : 'application/json',
+        type:'POST',
+        url:'http://localhost:3000/post',           
+
+    });
+} );
+
+
+
+$(function() {  
+
+$('#select1').change(function(){
+    var test = $('#select1');
+    currentID = test.val();
+    console.log(test.val());
+    
+    getGrades(test.val());
+    
+    
+});
 
 });
+
+function getGrades(id){
+    $.ajax({
+        type: 'GET',        
+        url: `http://localhost:3000/${id}`, 
+        success: function (orders) {
+            listOfGrades=[];        
+            listOfGrades.push(orders.gradeList);
+            addRowData();            
+        }
+    });
+}
+
