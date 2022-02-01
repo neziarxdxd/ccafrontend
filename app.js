@@ -38,7 +38,8 @@ $('#add-student').on('click',function(){
     var $studentID = $("#studentID");
     var studenTest =  {
     "studentID":$studentID.val(),
-    "studentName":$studentName.val(),   
+    "studentName":$studentName.val(),
+    "gradeList":[],   
     };
 
     $.ajax({
@@ -50,33 +51,49 @@ $('#add-student').on('click',function(){
     });
 } );
 var currentID;
-// this use to register student
+var currentStudentID;
+var currentStudentName;
+// add grade button
+$('#add-grade').on('click',function(){
+    var $name = $("#name");
+    var $grade = $("#grade");
+    var $gradeRecord =  {
+    "name":$name.val(),
+    "grade":$grade.val(),   
+    };
+    listOfGrades[0].push($gradeRecord);
+    addRowData();   
+    
+} );
+
+// save grade
 $('#save-grade').on('click',function(){
-    var $studentName = $("#studentName");
-    var $studentID = $("#studentID");
+   
+    var $studentID =$('#select1 option:selected').text();
+    var $studentName = currentStudentName;
     var studenTest =  {
-    "studentID":$studentID.val(),
-    "studentName":$studentName.val(),   
+        "studentName": $studentName,
+    "studentID":$studentID,
+        "gradeList":listOfGrades[0],
+      
     };
 
     $.ajax({
         data : JSON.stringify(studenTest),
         contentType : 'application/json',
-        type:'POST',
-        url:'http://localhost:3000/post',           
+        type:'PATCH',
+        url:`http://localhost:3000/update/${currentID}`,           
 
     });
 } );
 
 
-
-$(function() {  
-
+$(function() { 
 $('#select1').change(function(){
     var test = $('#select1');
-    currentID = test.val();
-    console.log(test.val());
     
+    currentID = test.val();
+    console.log(test.val());    
     getGrades(test.val());
     
     
@@ -91,6 +108,7 @@ function getGrades(id){
         success: function (orders) {
             listOfGrades=[];        
             listOfGrades.push(orders.gradeList);
+            currentStudentName = orders.studentName;
             addRowData();            
         }
     });
